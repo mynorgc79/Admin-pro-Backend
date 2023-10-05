@@ -2,12 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { Animal } from './animal.entity';
+import { Biome } from './biome.entity';
+import { Diet } from './diet.entity';
 
 @Entity('species')
 export class Species {
@@ -27,6 +32,13 @@ export class Species {
 
   @OneToMany(() => Animal, (animal) => animal.species)
   animals: Animal[];
+
+  @ManyToOne(() => Biome, (biome) => biome.species)
+  biome: Biome;
+
+  @ManyToMany(() => Diet, (diet) => diet.species)
+  @JoinTable()
+  diets: Diet[];
 
   @CreateDateColumn({
     type: 'timestamptz',
